@@ -10,20 +10,20 @@ class Node<T> {
   }
 }
 
-class LinkedList<T = any> {
+export class LinkedList<T = any> {
   // 头指针
-  private header: Node<T> | null = null;
+  protected header: Node<T> | null = null;
   // 尾指针
-  private footer: Node<T> | null = null;
+  protected footer: Node<T> | null = null;
   // 链表长度
-  private size: number = 0;
+  protected size: number = 0;
 
   get length(): number {
     return this.size;
   }
 
   // 遍历链表
-  private getNode(position: number): Node<T> | null {
+  protected getNode(position: number): Node<T> | null {
     let index = 0;
     let current = this.header;
 
@@ -35,14 +35,14 @@ class LinkedList<T = any> {
   }
 
   // 检查链表越界问题
-  private checkNodePosition(position: number) {
+  protected checkNodePosition(position: number) {
     if (position < 0 || position > this.size) {
       throw new Error("position out of bounds");
     }
   }
 
   // 判断节点是否为最后一个节点
-  private isFooterNode(node: Node<T>) {
+  protected isFooterNode(node: Node<T>) {
     return node === this.footer;
   }
 
@@ -55,6 +55,12 @@ class LinkedList<T = any> {
     while (index++ < this.size && current) {
       arr.push(current!.value);
       current = current?.next;
+
+      // 循环链表打印
+      if (current === this.header) {
+        arr.push(`circular(${this.footer?.next?.value})` as any);
+        break;
+      }
     }
 
     console.log(arr.join(" -> "));
@@ -146,7 +152,7 @@ class LinkedList<T = any> {
     let index = 0;
     let current = this.header;
 
-    while (current) {
+    while (current && index < this.size) {
       if (current?.value === value) return index;
 
       current = current!.next;
@@ -211,6 +217,6 @@ linkedList.removeAt(4);
 
 // linkedList.remove(3);
 
-linkedList.traverse();
+// linkedList.traverse();
 
 export {};
