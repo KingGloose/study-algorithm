@@ -89,19 +89,22 @@ class LinkedList<T = any> {
   }
 
   // 删除数据
-  removeAt(position: number) {
+  removeAt(position: number): T | null {
     this.checkNodePosition(position);
 
+    let current = this.header;
     if (position === 0) {
-      this.header = this.header!.next;
+      this.header = current!.next;
     } else {
       const previous = this.getNode(position - 1);
-      const current = previous!.next;
+      current = previous!.next;
 
       previous!.next = current!.next;
     }
 
     this.size--;
+
+    return current?.value ?? null;
   }
 
   // 获取数据
@@ -138,7 +141,7 @@ class LinkedList<T = any> {
   // 删除元素
   remove(value: T) {
     const index = this.indexOf(value);
-    this.removeAt(index);
+    return this.removeAt(index);
   }
 
   // 判断是否为空
@@ -172,7 +175,9 @@ linkedList.append(3);
 linkedList.append(5);
 linkedList.append(7);
 
-linkedList.reserve();
+console.log(linkedList.remove(3));
+
+// linkedList.reserve();
 
 // linkedList.insertAt(6, 4);
 
