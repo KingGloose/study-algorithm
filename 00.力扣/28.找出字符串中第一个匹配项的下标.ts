@@ -5,7 +5,7 @@ function strStr(haystack: string, needle: string): number {
   return haystack.indexOf(needle);
 }
 
-// method1 - KMP(不懂啊) - 
+// method1 - KMP(不懂啊) -
 function strStr1(haystack: string, needle: string): number {
   return haystack.indexOf(needle);
 }

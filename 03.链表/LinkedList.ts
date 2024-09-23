@@ -11,11 +11,13 @@ class Node<T> {
 }
 
 class LinkedList<T = any> {
-  private header: Node<T> | null = null; // 头指针
+  // 头指针
+  private header: Node<T> | null = null;
+  // 尾指针
+  private footer: Node<T> | null = null;
+  // 链表长度
+  private size: number = 0;
 
-  private footer: Node<T> | null = null; // 尾指针
-
-  private size: number = 0; // 链表长度
   get length(): number {
     return this.size;
   }
@@ -39,8 +41,13 @@ class LinkedList<T = any> {
     }
   }
 
+  // 判断节点是否为最后一个节点
+  private isFooterNode(node: Node<T>) {
+    return node === this.footer;
+  }
+
   // 查看所有数据
-  traverse() {
+  public traverse() {
     let index = 0;
     let arr: T[] = [];
 
@@ -54,22 +61,21 @@ class LinkedList<T = any> {
   }
 
   // 添加数据
-  append(value: T) {
+  public append(value: T) {
     const node = new Node(value);
 
     if (this.size === 0) {
       this.header = node;
-      this.footer = this.header;
     } else {
       this.footer!.next = node;
-      this.footer = node;
     }
+    this.footer = node;
 
     this.size++;
   }
 
   // 插入数据
-  insertAt(value: T, position: number) {
+  public insertAt(value: T, position: number) {
     this.checkNodePosition(position);
 
     const node = new Node(value);
@@ -83,23 +89,35 @@ class LinkedList<T = any> {
 
       previous!.next = node;
       node.next = current;
+
+      if (position === this.size) {
+        this.footer = node;
+      }
     }
 
     this.size++;
   }
 
   // 删除数据
-  removeAt(position: number): T | null {
+  public removeAt(position: number): T | null {
     this.checkNodePosition(position);
 
     let current = this.header;
     if (position === 0) {
       this.header = current!.next;
+
+      if (this.size === 1) {
+        this.footer = null;
+      }
     } else {
       const previous = this.getNode(position - 1);
       current = previous!.next;
 
       previous!.next = current!.next;
+
+      if (position === this.size - 1) {
+        this.footer = previous;
+      }
     }
 
     this.size--;
@@ -108,7 +126,7 @@ class LinkedList<T = any> {
   }
 
   // 获取数据
-  getAt(position: number) {
+  public getAt(position: number) {
     this.checkNodePosition(position);
 
     const current = this.getNode(position);
@@ -116,7 +134,7 @@ class LinkedList<T = any> {
   }
 
   // 更新数据
-  updateAt(value: T, position: number) {
+  public updateAt(value: T, position: number) {
     this.checkNodePosition(position);
 
     const current = this.getNode(position);
@@ -124,7 +142,7 @@ class LinkedList<T = any> {
   }
 
   // 获取索引
-  indexOf(value: T) {
+  public indexOf(value: T) {
     let index = 0;
     let current = this.header;
 
@@ -139,18 +157,18 @@ class LinkedList<T = any> {
   }
 
   // 删除元素
-  remove(value: T) {
+  public remove(value: T) {
     const index = this.indexOf(value);
     return this.removeAt(index);
   }
 
   // 判断是否为空
-  isEmpty() {
+  public isEmpty() {
     return this.size === 0;
   }
 
   // 反转链表
-  reserve() {
+  public reserve() {
     let prevNode: Node<T> | null = null;
     let currNode = this.header;
     let nextNode = currNode?.next;
@@ -175,7 +193,9 @@ linkedList.append(3);
 linkedList.append(5);
 linkedList.append(7);
 
-console.log(linkedList.remove(3));
+linkedList.removeAt(4);
+
+// console.log(linkedList.remove(3));
 
 // linkedList.reserve();
 

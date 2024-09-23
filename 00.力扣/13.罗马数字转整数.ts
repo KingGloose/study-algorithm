@@ -31,10 +31,7 @@ function romanToInt(s: string): number {
 
     switch (c) {
       case "I":
-        if (
-          i !== s_arr.length - 1 &&
-          (s_arr[i + 1] === "V" || s_arr[i + 1] === "X")
-        ) {
+        if (i !== s_arr.length - 1 && (s_arr[i + 1] === "V" || s_arr[i + 1] === "X")) {
           num += find(s_arr[i + 1]) - find("I");
           i++;
         } else {
@@ -45,10 +42,7 @@ function romanToInt(s: string): number {
         num += find("V");
         break;
       case "X":
-        if (
-          i !== s_arr.length - 1 &&
-          (s_arr[i + 1] === "L" || s_arr[i + 1] === "C")
-        ) {
+        if (i !== s_arr.length - 1 && (s_arr[i + 1] === "L" || s_arr[i + 1] === "C")) {
           num += find(s_arr[i + 1]) - find("X");
           i++;
         } else {
@@ -59,10 +53,7 @@ function romanToInt(s: string): number {
         num += find("L");
         break;
       case "C":
-        if (
-          i !== s_arr.length - 1 &&
-          (s_arr[i + 1] === "D" || s_arr[i + 1] === "M")
-        ) {
+        if (i !== s_arr.length - 1 && (s_arr[i + 1] === "D" || s_arr[i + 1] === "M")) {
           num += find(s_arr[i + 1]) - find("C");
           i++;
         } else {

@@ -44,5 +44,4 @@ function reverseList1(head: ListNode | null): ListNode | null {
   return head;
 }
 
-// method3 - 递归 - 
-
+// method3 - 递归 -

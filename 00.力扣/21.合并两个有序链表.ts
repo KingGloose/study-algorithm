@@ -10,10 +10,7 @@ class ListNode {
 }
 
 // method1 - 68ms
-function mergeTwoLists(
-  list1: ListNode | null,
-  list2: ListNode | null
-): ListNode | null {
+function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode | null {
   let head = new ListNode();
   let last = head;
 
