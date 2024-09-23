@@ -35,7 +35,7 @@ class TreeNode {
 
 class BSTree {
   // 根节点
-  private root: TreeNode | null;
+  private root: TreeNode | null = null;
   // 节点数
   private count: number = 0;
 
@@ -235,7 +235,7 @@ class BSTree {
   public searchRecursion(value: number) {
     return this._searchRecursion(this.root, value);
   }
-  private _searchRecursion(node: TreeNode | null, value: number) {
+  private _searchRecursion(node: TreeNode | null, value: number): any {
     if (!node) return false;
 
     if (node.value > value) {
