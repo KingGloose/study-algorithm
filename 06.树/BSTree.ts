@@ -35,9 +35,9 @@ class TreeNode {
 
 class BSTree {
   // 根节点
-  root: TreeNode | null;
+  private root: TreeNode | null;
   // 节点数
-  count: number = 0;
+  private count: number = 0;
 
   // 打印
   public print() {
@@ -292,6 +292,8 @@ class BSTree {
     } else if (current?.isRight) {
       current.parent!.right = replaceNode;
     }
+
+    this.count--;
   }
 }
 
