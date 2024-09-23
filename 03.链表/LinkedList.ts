@@ -87,7 +87,11 @@ export class LinkedList<T = any> {
     const node = new Node(value);
 
     if (position === 0) {
-      node.next = this.header;
+      if (this.size !== 0) {
+        node.next = this.header;
+      } else {
+        this.footer = node;
+      }
       this.header = node;
     } else {
       const previous = this.getNode(position - 1);
