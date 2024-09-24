@@ -1,4 +1,15 @@
-import StackType from "./StackType";
+// 基于数组的栈
+
+interface ListType<T> {
+  isEmpty(): boolean;
+  size(): number;
+}
+
+interface StackType<T> extends ListType<T> {
+  push(ele: T): void;
+  pop(): T | undefined;
+  peek(): T | undefined;
+}
 
 class ArrayStack<T = any> implements StackType<T> {
   private data: T[] = [];
