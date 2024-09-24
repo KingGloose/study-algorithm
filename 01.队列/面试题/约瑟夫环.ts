@@ -1,4 +1,4 @@
-import ArrayQueue from "../实现/ArrayQueue";
+import ArrayQueue from "../ArrayQueue";
 
 const arrayQueue = new ArrayQueue<number>();
 

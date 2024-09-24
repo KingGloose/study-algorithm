@@ -1,4 +1,4 @@
-import ListType from "../../Type/ListType";
+import ListType from "../Type/ListType";
 
 interface StackType<T> extends ListType<T> {
   push(ele: T): void;

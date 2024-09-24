@@ -1,4 +1,4 @@
-import ArrayStack from "../实现/ArrayStack";
+import ArrayStack from "../ArrayStack";
 
 let arrayStack = new ArrayStack<number>();
 

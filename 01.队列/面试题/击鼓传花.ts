@@ -1,4 +1,4 @@
-import ArrayQueue from "../实现/ArrayQueue";
+import ArrayQueue from "../ArrayQueue";
 
 function start(arr: string[], size: number): string {
   let aq = new ArrayQueue<string>();
