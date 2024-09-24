@@ -1,11 +1,11 @@
 import { cbtPrint } from "hy-algokit";
 
-class BinaryHeap {
-  private data: number[];
+export class BinaryHeap<T = any> {
+  private data: T[];
   private length: number = 0;
   private isMaxHeap: boolean; // true为最大堆 / false为最小堆
 
-  constructor(isMaxHeap = true, initArr: number[] = []) {
+  constructor(isMaxHeap = true, initArr: T[] = []) {
     this.isMaxHeap = isMaxHeap;
     this.data = initArr;
     this.length = initArr.length + 1;
@@ -41,7 +41,7 @@ class BinaryHeap {
   }
 
   // 插入数据
-  public insert(value: number) {
+  public insert<K = T>(value: K) {
     this.data.push(value);
     this.length++;
 
@@ -104,7 +104,7 @@ class BinaryHeap {
   }
 
   // 原地建堆
-  private buildHeap(arr: number[]) {
+  private buildHeap(arr: T[]) {
     const length = arr.length - 1;
 
     // 找到最近的叶子节点 进行下滤操作
@@ -117,4 +117,4 @@ class BinaryHeap {
 
 const binaryHeap = new BinaryHeap(true, [19, 100, 36, 17, 3, 25, 1, 2, 7]);
 
-binaryHeap.print();
+// binaryHeap.print();
