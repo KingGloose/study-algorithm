@@ -9,11 +9,14 @@ function maxSubArray1(nums: number[]): number {
     const current = nums[i];
     prev = prev + current > current ? prev + current : current;
     if (prev > max) max = prev;
+
+    console.log(prev);
   }
 
   return max;
 }
 
+// [-2, 1, -2, 4, 3, 5, 6, 1, 5, 6]
 console.log(maxSubArray1([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
 
 export {};
