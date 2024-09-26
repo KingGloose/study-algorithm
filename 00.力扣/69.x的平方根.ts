@@ -11,8 +11,3 @@ function mySqrt1(x: number): number {
   }
   return 1;
 }
-
-// method2 二分查找
-function mySqrt2(x: number): number {
-  
-}
