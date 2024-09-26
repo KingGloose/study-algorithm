@@ -41,7 +41,7 @@ export class BinaryHeap<T = any> {
   }
 
   // 插入数据
-  public insert<K = T>(value: K) {
+  public insert(value: T) {
     this.data.push(value);
     this.length++;
 
