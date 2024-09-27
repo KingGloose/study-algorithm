@@ -158,7 +158,7 @@ class AVLTree extends BSTree {
           1、add 情况只需要一次 rebalance 即可
           2、remove 情况则需要多次
         */
-        if (isAdd) break;
+        // if (isAdd) break;
       }
       current = current.parent!;
     }
