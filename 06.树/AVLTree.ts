@@ -1,7 +1,7 @@
-// AVL树
-
 import { btPrint } from "hy-algokit";
+import { BSTree } from "./BSTree";
 
+// AVL树
 class AVLTreeNode {
   left: AVLTreeNode | null = null;
   value: number;
@@ -49,7 +49,7 @@ class AVLTreeNode {
   }
 
   // 获取当前元素高度较高的子元素 (左/右节点)
-  private getHigherChild(): AVLTreeNode | null {
+  public getHigherChild(): AVLTreeNode | null {
     const leftHeight: number = this.left ? this.left?.getHeight() : 0;
     const rightHeight: number = this.right ? this.right.getHeight() : 0;
 
@@ -60,7 +60,7 @@ class AVLTreeNode {
 
   // 如果平衡因子大于 1 的话就不平衡
   get isBalence(): boolean {
-    return this.getBalenceFactor() >= 1;
+    return this.getBalenceFactor() <= 1;
   }
 
   // 右旋转
@@ -98,7 +98,7 @@ class AVLTreeNode {
     const rootIsLeft = root.isLeft;
     const rootIsRight = root.isRight;
 
-    // 02 处理 povint 的右子节点
+    // 02 处理 povint 的左子节点
     root.right = povint!.left;
     if (povint?.left) povint.left.parent = root;
 
@@ -116,22 +116,103 @@ class AVLTreeNode {
   }
 }
 
-const avlNode0 = new AVLTreeNode(30);
-const avlNode1 = new AVLTreeNode(20);
-const avlNode2 = new AVLTreeNode(10);
-const avlNode3 = new AVLTreeNode(5);
+class AVLTree extends BSTree {
+  protected root: AVLTreeNode | null = null;
 
-avlNode0.right = avlNode1;
-avlNode1.right = avlNode2;
-avlNode2.right = avlNode3;
+  constructor(arr: number[] = []) {
+    super();
+    arr.forEach((item) => this.add(item));
+  }
 
-avlNode0.parent = null;
-avlNode1.parent = avlNode0;
-avlNode2.parent = avlNode1;
-avlNode3.parent = avlNode2;
+  // 打印
+  public print() {
+    btPrint(this.root);
+  }
 
-// btPrint(avlNode0);
+  // 重写父元素的 createNode, 在 insert 就会返回子元素的 AVLTreeNode
+  protected createNode(value: number): AVLTreeNode {
+    return new AVLTreeNode(value);
+  }
 
-avlNode0.leftRotation();
+  // 新建一个插入方法
+  public add(value: number) {
+    const newNode = super.insert(value) as AVLTreeNode;
+    this.checkBalance(newNode, true);
+  }
 
-btPrint(avlNode1);
+  // 新建一个删除方法
+  public remove(value: number) {
+    const delNode = super.delete(value) as AVLTreeNode;
+    this.checkBalance(delNode, false);
+  }
+
+  // 检查是否平衡
+  public checkBalance(node: AVLTreeNode, isAdd = true) {
+    let current = node.parent;
+    while (current) {
+      if (!current.isBalence) {
+        this.rebalance(current);
+
+        // 性能优化
+        /*
+          1、add 情况只需要一次 rebalance 即可
+          2、remove 情况则需要多次
+        */
+        if (isAdd) break;
+      }
+      current = current.parent!;
+    }
+  }
+
+  // 传入不平衡的节点进行平衡操作
+  public rebalance(root: AVLTreeNode) {
+    const pivot = root.getHigherChild();
+    const child = pivot?.getHigherChild();
+
+    let newRoot: AVLTreeNode | null = null;
+    if (pivot?.isLeft) {
+      if (child?.isLeft) {
+        newRoot = root.rightRotation(); // LL
+      } else {
+        pivot.leftRotation(); // LR
+        newRoot = root.rightRotation();
+      }
+    } else {
+      if (child?.isRight) {
+        newRoot = root!.leftRotation(); // RR
+      } else {
+        pivot?.rightRotation(); // RL
+        newRoot = root.leftRotation();
+      }
+    }
+
+    if (!newRoot?.parent) this.root = newRoot;
+  }
+}
+
+const avlTree = new AVLTree();
+
+// 随机生成数字模拟
+function shuffleArray(array: number[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+function generateAndSelectRandomNumbers() {
+  let numbers = [];
+  for (let i = 0; i < 25; i++) numbers.push(Math.floor(Math.random() * 100) + 1);
+  let shuffledNumbers = numbers.slice();
+  shuffleArray(shuffledNumbers);
+  let selectedNumbers = shuffledNumbers.slice(0, 7);
+  return [numbers, selectedNumbers];
+}
+const [ori, del] = generateAndSelectRandomNumbers();
+console.log(ori, del);
+
+for (const item of ori) avlTree.add(item);
+avlTree.print();
+
+for (const item of del) avlTree.remove(item);
+avlTree.print();

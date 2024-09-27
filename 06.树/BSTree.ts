@@ -33,11 +33,15 @@ class TreeNode {
   }
 }
 
-class BSTree {
+export class BSTree {
   // 根节点
-  private root: TreeNode | null = null;
+  protected root: TreeNode | null = null;
   // 节点数
-  private count: number = 0;
+  protected count: number = 0;
+
+  constructor(arr: number[] = []) {
+    arr.forEach((item) => this.insert(item));
+  }
 
   // 打印树状
   public print() {
@@ -49,32 +53,38 @@ class BSTree {
     return this.count;
   }
 
+  // 创建节点
+  protected createNode(value: number): TreeNode {
+    return new TreeNode(value);
+  }
   // 插入
-  public insert(value: number) {
+  public insert(value: number): TreeNode {
     let node = this.root;
-    const newNode = new TreeNode(value);
+    const newNode = this.createNode(value);
 
     // 如果没有根节点就创建
     if (!node) {
       this.root = newNode;
-      return;
+      return newNode;
     }
 
     // 如果有根节点就查看左右树
     while (true) {
-      if (node.value === value) break;
-      if (node.value > value) {
+      if (node.value === value) {
+        break;
+      } else if (node.value > value) {
         if (!node.left) {
           node.left = newNode;
+          newNode.parent = node;
           this.count++;
           break;
         } else {
           node = node?.left;
         }
-      }
-      if (node.value < value) {
+      } else if (node.value < value) {
         if (!node.right) {
           node.right = newNode;
+          newNode.parent = node;
           this.count++;
           break;
         } else {
@@ -82,6 +92,8 @@ class BSTree {
         }
       }
     }
+
+    return newNode;
   }
 
   // 先序遍历: 优先访问根节点，之后开始访问左子树，再去访问右子树
@@ -274,6 +286,7 @@ class BSTree {
   // 删除
   public delete(value: number) {
     const current = this.searchNode(value);
+    const delNode = current;
 
     let replaceNode: TreeNode | null = null;
     if (!current?.left && !current?.right) {
@@ -289,9 +302,6 @@ class BSTree {
       // 04 存在2个及以上的节点 - 这里使用后继节点来做
       const successor = this.getMinNode(current.right);
 
-      // 如果没有父节点，那么就是当前节点为父节点
-      if (!successor.parent) successor.parent = current;
-
       // 保留 后驱节点
       replaceNode = successor;
 
@@ -300,13 +310,29 @@ class BSTree {
       if (successor.isRight) successor.parent!.right = null;
 
       // 将 后驱节点 中携带的信息移动到 父节点 中
-      if (successor.right) successor.parent.left = successor.right;
+      if (successor.right) {
+        successor.parent!.left = successor.right;
+        successor.right.parent = successor.parent;
+        successor.right = null;
+      }
 
       // 继承 待删除节点的信息 到 后驱节点中
-      if (current.left) successor.left = current.left;
-      if (current.right) successor.right = current.right;
+      if (current.left) {
+        current.left.parent = successor;
+        successor.left = current.left;
+        current.left = null;
+      }
+      if (current.right) {
+        current.right.parent = successor;
+        successor.right = current.right;
+        current.right = null;
+      }
+
+      // 处理 后驱节点 的父节点记录
+      successor.parent = current.parent;
     }
 
+    // 处理待删除元素的父节点
     if (current === this.root) {
       this.root = replaceNode;
     } else if (current?.isLeft) {
@@ -315,32 +341,44 @@ class BSTree {
       current.parent!.right = replaceNode;
     }
 
+    if (replaceNode && current?.parent) {
+      replaceNode.parent = current.parent;
+    }
+
     this.count--;
+
+    return delNode;
   }
 }
 
-const bsTree = new BSTree();
+// const bsTree = new BSTree();
 
-bsTree.insert(11);
-bsTree.insert(7);
-bsTree.insert(15);
-bsTree.insert(5);
-bsTree.insert(3);
-bsTree.insert(9);
-bsTree.insert(8);
-bsTree.insert(10);
-bsTree.insert(13);
-bsTree.insert(12);
-bsTree.insert(14);
-bsTree.insert(20);
-bsTree.insert(18);
-bsTree.insert(25);
-bsTree.insert(19);
-bsTree.insert(21);
-bsTree.insert(6);
+// bsTree.insert(11);
+// bsTree.insert(7);
+// bsTree.insert(15);
+// bsTree.insert(5);
+// bsTree.insert(3);
+// bsTree.insert(9);
+// bsTree.insert(8);
+// bsTree.insert(10);
+// bsTree.insert(13);
+// bsTree.insert(12);
+// bsTree.insert(14);
+// bsTree.insert(20);
+// bsTree.insert(18);
+// bsTree.insert(25);
+// bsTree.insert(19);
+// bsTree.insert(21);
+// bsTree.insert(6);
 
-bsTree.inOrderTraverseNoRecursion();
+// // bsTree.inOrderTraverseNoRecursion();
+
+// bsTree.print();
+
 // bsTree.delete(15);
-bsTree.print();
+// bsTree.delete(18);
+// bsTree.delete(11);
+
+// bsTree.print();
 
 export {};
