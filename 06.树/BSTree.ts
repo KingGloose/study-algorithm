@@ -39,7 +39,7 @@ class BSTree {
   // 节点数
   private count: number = 0;
 
-  // 打印
+  // 打印树状
   public print() {
     btPrint(this.root);
   }
@@ -96,7 +96,6 @@ class BSTree {
       this.preOrderTraverseNode(node.right);
     }
   }
-
   // 先序遍历 - 非递归版
   public preOrderTraverseNoRecursion() {
     let stack: TreeNode[] = [];
@@ -123,6 +122,29 @@ class BSTree {
       this.inOrderTraverseNode(node.left);
       console.log(node.value);
       this.inOrderTraverseNode(node.right);
+    }
+  }
+  // 中序遍历 - 非递归版本
+  /*
+    1、放入栈时先放入自己
+    2、放入自己压入左边
+    3、当自己弹出压入右边
+  */
+  public inOrderTraverseNoRecursion() {
+    let stack: TreeNode[] = [];
+    let current: TreeNode | null = this.root;
+
+    while (current !== null || stack.length !== 0) {
+      while (current !== null) {
+        stack.push(current);
+        current = current.left;
+      }
+
+      const node = stack.pop() as TreeNode;
+      console.log(node.value);
+      if (node.right) {
+        current = node.right;
+      }
     }
   }
 
@@ -315,7 +337,10 @@ bsTree.insert(18);
 bsTree.insert(25);
 bsTree.insert(19);
 bsTree.insert(21);
-// bsTree.insert(6);
+bsTree.insert(6);
 
-bsTree.delete(15);
+bsTree.inOrderTraverseNoRecursion();
+// bsTree.delete(15);
 bsTree.print();
+
+export {};
