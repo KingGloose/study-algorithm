@@ -1,6 +1,7 @@
 // AVL树
 
 import { btPrint } from "hy-algokit";
+
 class AVLTreeNode {
   left: AVLTreeNode | null = null;
   value: number;
@@ -51,6 +52,7 @@ class AVLTreeNode {
   private getHigherChild(): AVLTreeNode | null {
     const leftHeight: number = this.left ? this.left?.getHeight() : 0;
     const rightHeight: number = this.right ? this.right.getHeight() : 0;
+
     if (leftHeight > rightHeight) return this.left;
     if (leftHeight < rightHeight) return this.right;
     return this.isLeft ? this.left : this.right;
@@ -64,7 +66,7 @@ class AVLTreeNode {
   // 右旋转
   public rightRotation() {
     // 01 获取 povint 节点
-    const povint = this.getHigherChild();
+    const povint = this.left;
     const root = this;
 
     const rootIsLeft = root.isLeft;
@@ -82,7 +84,33 @@ class AVLTreeNode {
     // 04 处理 povint 要挂载到父节点的那个节点
     if (rootIsLeft) povint!.parent!.left = povint;
     else if (rootIsRight) povint!.parent!.right = povint;
-    else povint!.parent = null;
+    else if (!povint?.parent) povint!.parent = null;
+
+    return povint;
+  }
+
+  // 左旋转
+  public leftRotation() {
+    // 01 获取 povint 节点
+    const povint = this.right;
+    const root = this;
+
+    const rootIsLeft = root.isLeft;
+    const rootIsRight = root.isRight;
+
+    // 02 处理 povint 的右子节点
+    root.right = povint!.left;
+    if (povint?.left) povint.left.parent = root;
+
+    // 03 处理 当前节点
+    povint!.parent = root.parent;
+    povint!.left = root;
+    root.parent = povint;
+
+    // 04 处理 povint 要挂载到父节点的那个节点
+    if (rootIsLeft) povint!.parent!.left = povint;
+    else if (rootIsRight) povint!.parent!.right = povint;
+    else if (!povint?.parent) povint!.parent = null;
 
     return povint;
   }
@@ -93,13 +121,17 @@ const avlNode1 = new AVLTreeNode(20);
 const avlNode2 = new AVLTreeNode(10);
 const avlNode3 = new AVLTreeNode(5);
 
-avlNode0.left = avlNode1;
-avlNode1.left = avlNode2;
-avlNode2.left = avlNode3;
+avlNode0.right = avlNode1;
+avlNode1.right = avlNode2;
+avlNode2.right = avlNode3;
 
 avlNode0.parent = null;
 avlNode1.parent = avlNode0;
 avlNode2.parent = avlNode1;
 avlNode3.parent = avlNode2;
 
-btPrint(avlNode0.rightRotation());
+// btPrint(avlNode0);
+
+avlNode0.leftRotation();
+
+btPrint(avlNode1);
