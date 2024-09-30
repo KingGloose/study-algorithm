@@ -86,6 +86,7 @@ export class BinaryHeap<T = any> {
   // 下滤 - 输入下滤的索引
   private heapifyDown(index: number) {
     let currentIndex = index;
+
     let leftChildIndex = 2 * currentIndex + 1;
     let rightChildIndex = 2 * currentIndex + 2;
     let largeChildIndex = leftChildIndex;
