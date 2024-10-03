@@ -9,10 +9,7 @@
       "type": "node",
       "request": "launch",
       "args": ["${relativeFile}"],
-      "runtimeArgs": [
-        "-r",
-        "${env:NVM_SYMLINK}\\node_modules\\ts-node\\register"
-      ],
+      "runtimeArgs": ["-r", "${env:NVM_SYMLINK}\\node_modules\\ts-node\\register"],
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
       "internalConsoleOptions": "openOnSessionStart"
