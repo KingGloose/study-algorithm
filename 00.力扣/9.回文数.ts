@@ -39,3 +39,5 @@ function isPalindrome2(x: number): boolean {
 }
 
 console.log("🚀 ~ isPalindrome(121):", isPalindrome2(121));
+
+export {}
