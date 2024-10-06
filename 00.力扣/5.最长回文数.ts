@@ -1,6 +1,7 @@
 // leecode: https://leetcode.cn/problems/longest-palindromic-substring/description/
 
 // method1 - 82ms
+// 本质就是从中心往外边扩散
 function longestPalindrome(s: string): string {
   let max = 0;
   let rsLeft = 0;
