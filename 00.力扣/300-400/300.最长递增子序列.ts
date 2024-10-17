@@ -15,7 +15,7 @@ function lengthOfLIS1(nums: number[]): number {
     max = Math.max(max, dp[i]);
   }
 
-  return max;
+  return max;  
 }
 
 // method2 - 贪心算法 + 二分查找 - 74ms -> nlogn
